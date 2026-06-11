@@ -5,7 +5,7 @@ class HomeMenu extends StatelessWidget {
   final VoidCallback onTwoPlayers;
   final VoidCallback onVsAi;
 
-  const HomeMenu({
+  const HomeMenu({super.key, 
     required this.onTwoPlayers,
     required this.onVsAi,
   });
