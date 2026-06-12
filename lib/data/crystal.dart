@@ -76,19 +76,18 @@ class Crystal {
     }
 
     if(type == PartType.weapon) {
-      String weaponPart = "";
-      if(leftPart.type == PartType.weapon) {
-        weaponPart = leftPart.description;
-      } 
-      if(centerPart.type == PartType.weapon) {
-        weaponPart = centerPart.description;
-      } 
-      if(rightPart.type == PartType.weapon) {
-        weaponPart = rightPart.description;
-      }
-      description = weaponPart;
+      var localDamage = 0;
+      if(leftPart.id != 0) localDamage += leftPart.value;//damage.add(leftPart.value);
+      if(centerPart.id != 0) localDamage += centerPart.value;//damage.add(centerPart.value);
+      if(rightPart.id != 0) localDamage += rightPart.value;//damage.add(rightPart.value);
+      damage.add(localDamage);
     } else {
-      description = "${leftPart.description}\n${centerPart.description}\n${rightPart.description}";
+      var localMoney = 0;
+      if(leftPart.id != 0) localMoney += leftPart.value;
+      if(centerPart.id != 0) localMoney += centerPart.value;
+      if(rightPart.id != 0) localMoney += rightPart.value;
+      money = localMoney;
+      //description = "${leftPart.description}\n${centerPart.description}\n${rightPart.description}";
     }
   }
 
@@ -116,13 +115,19 @@ class Crystal {
 
 // Player data model (заглушка для демонстрації)
 class Player {
+  int id;
   int health;
+  int toolHealth;
   int money;
   List<Crystal> crystals;
+  String ultimate;
   
   Player({
+    required this.id,
     required this.health,
+    required this.toolHealth,
     required this.money,
     required this.crystals,
+    required this.ultimate,
   }); 
 }
