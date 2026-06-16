@@ -5,7 +5,7 @@ import '../data/database.dart';
 import 'event_state/suply_es.dart';
 
 class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
-  final List<CrystalPart> suply;
+  List<CrystalPart> suply;
   var data = Database();
 
   SuplyBloc(this.suply) : super(SuplyUpdatedState(suply)) {
@@ -15,8 +15,14 @@ class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
   }
 
   _suplyInitial(SuplyInitialEvent event, Emitter<SuplyState> emit) {
-    var suply = data.generateSuply();
+    var suply = _generateSuply();
     emit(SuplyUpdatedState(suply));
+  }
+
+  List<CrystalPart> _generateSuply() {
+    List<CrystalPart> localSuply = [];
+    
+    return localSuply;
   }
 
   _getCrystalPart(SuplyGetCPEvent event, Emitter<SuplyState> emit) {

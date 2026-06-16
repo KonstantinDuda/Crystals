@@ -1,5 +1,5 @@
 // Part of Crystal data model
-enum PartType {money, weapon}
+enum PartType {money, weapon, modifier}
 enum PartSide {left, center, right}
 
 class CrystalPart{
@@ -30,25 +30,13 @@ class CrystalPart{
     this.side = PartSide.center,
     this.value = 0,
   });
+
+  @override
+  String toString() {
+    var result = "id: $id, name: $name, description: $description \n";
+    return result;
+  }
 }
-
-// class WeaponPart extends CrystalPart {
-//   WeaponPart( int value,
-//     ) : super(1, "Weapon Part", "A part of a weapon crystal", PartType.weapon, value);
-
-//   WeaponPart.empty(
-//      int value,
-//     ) : super(0, "", "", PartType.weapon, 0);
-// }
-
-// class MoneyPart extends CrystalPart {
-//   MoneyPart( int value,
-//     ) : super(1, "Money Part", "A part of a money crystal", PartType.money, value);
-
-//   MoneyPart.empty(
-//      int value,
-//     ) : super(0, "", "", PartType.money, 0);
-// }
 
 // Crystal data model
 class Crystal {
