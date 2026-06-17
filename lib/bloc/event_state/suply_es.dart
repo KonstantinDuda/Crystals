@@ -33,6 +33,8 @@ class SuplyState extends Equatable {
   List<Object?> get props => [];
 }
 
+class SuplyInitialState extends SuplyState {}
+
 class SuplyUpdatedState extends SuplyState {
   final List<CrystalPart> updatedSuply;
 

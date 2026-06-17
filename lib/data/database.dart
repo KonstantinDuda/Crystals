@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'crystal.dart';
 
 class Database {
@@ -11,50 +13,85 @@ class Database {
     _generateDatabase();
   }
 
-  // TODO: Add CRUD operations for crystal parts
   final List<CrystalPart> _database = [];
   final List<CrystalPart> _moneyParts = [];
   final List<CrystalPart> _weaponParts = [];
 
   void _generateDatabase() {
-    int ids = 0;
-    for (int i = 0; i < 9; i++) {
+    PartSide getSide() {
       var side = PartSide.left;
-      var value = i + 1;
-      if (i >= 3 && i < 6) {
+      var rand = Random().nextInt(3);
+      if(rand == 1) {
         side = PartSide.center;
-        value = i - 2;
-      } else if (i >= 6) {
+      } else if(rand == 2) {
         side = PartSide.right;
-        value = i - 5;
       }
-
-      _moneyParts.add(
-        CrystalPart(
-          id: i + 1,
-          name: "Left ${i + 1} Money Part",
-          description: "Add ${i + 1} money",
-          price: (i + 1) * 2,
-          type: PartType.money,
-          side: side,
-          value: value,
-        ),
-      );
-      _weaponParts.add(
-        CrystalPart(
-          id: i + 1,
-          name: "Left ${i + 1} Weapon Part",
-          description: "Add ${i + 1} damage",
-          price: (i + 1) + 1,
-          type: PartType.weapon,
-          side: side,
-          value: value,
-        ),
-      );
+      return side;
     }
+
+    for (int i = 2; i < 14; i++) {
+      var money = 1;
+      var damage = 1;
+
+      var localName = "Crystal";
+      var descMoney = "Get n money";
+      var descWeapon = "Deal n damage";
+      
+      if (i >= 2 && i < 5) {
+        var side = getSide();
+        var newPart = createCrystalPart(
+          localName, descMoney, i, 
+          PartType.money, side, money
+        );
+        _moneyParts.add(newPart);
+      } 
+      if (i >= 4 && i < 8) {
+        money = 2;
+        var side = getSide();
+        var newPart = createCrystalPart(
+          localName, descMoney, i, 
+          PartType.money, side, money
+        );
+        _moneyParts.add(newPart);
+
+        var weapSide = getSide();
+        var newWeap = createCrystalPart(
+          localName, descWeapon, i, 
+          PartType.weapon, weapSide, damage
+        );
+        _weaponParts.add(newWeap);
+      }
+      if (i >= 7 && i < 12) {
+        money = 3;
+        var side = getSide();
+        var newPart = createCrystalPart(
+          localName, descMoney, i, 
+          PartType.money, side, money
+        );
+        _moneyParts.add(newPart);
+
+        damage = 2;
+        var weapSide = getSide();
+        var newWeap = createCrystalPart(
+          localName, descWeapon, i, 
+          PartType.weapon, weapSide, damage
+        );
+        _weaponParts.add(newWeap);
+      }
+      if (i >= 11 && i <= 13) {
+        damage = 3;
+        var weapSide = getSide();
+        var newWeap = createCrystalPart(
+          localName, descWeapon, i, 
+          PartType.weapon, weapSide, damage
+        );
+        _weaponParts.add(newWeap);
+      }
+    }
+    print("_generateDatabase. _database.length: ${_database.length}");
   }
 
-  void createCrystalPart(String name, String description, int price, PartType type, PartSide side, int value) {
+  CrystalPart createCrystalPart(String name, String description, int price, PartType type, PartSide side, int value) {
     int localId = _database.isEmpty ? 1 : _database.last.id + 1;
     CrystalPart newCrystal = CrystalPart(id: localId, 
       name: name, description: description, 
@@ -66,6 +103,7 @@ class Database {
         _weaponParts.add(newCrystal);
       }
       _database.add(newCrystal);
+      return newCrystal;
   }
 
   CrystalPart getCrystalPart(int id) {
@@ -74,12 +112,7 @@ class Database {
   }
 
   void updateCrystalPart(int id, CrystalPart newPart) {
-    //var oldPart = _database.firstWhere(((element) => element.id == id), orElse: () => CrystalPart.empty());
-    //print("_database: updateCrystalPart oldPart == $oldPart");
-    
-    //if(oldPart.id != 0) {
-      //var index = _database.indexOf(oldPart);
-var index = getIndex(id);
+var index = _getIndex(id);
 var oldPart = CrystalPart.empty();
 
     if(index > -1){
@@ -92,13 +125,17 @@ var oldPart = CrystalPart.empty();
   }
 
   void deleteCrystalPart(int id) {
-    var index = getIndex(id);
+    var index = _getIndex(id);
     if(index > -1) _database.removeAt(index);
   }
 
-  int getIndex(int id) {
+  int _getIndex(int id) {
     var part = _database.firstWhere(((element) => element.id == id), orElse: () => CrystalPart.empty());
     var result = _database.indexOf(part);
     return result;
+  }
+
+  getDataLength() {
+    return _database.length;
   }
 }

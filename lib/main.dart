@@ -1,4 +1,5 @@
 //import 'package:crystal/data/database.dart';
+import 'package:crystal/bloc/suply_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,9 @@ void main() {
   Bloc.observer = SimpleBlocObserver();
   //var data = Database();
 
-  runApp(GameWidget(game: MyFlameProvider())
-    // BlocProvider(create: (context) => ProviderBloc(),
-    //   child: const MyApp(),
-    // ),
+  runApp(//GameWidget(game: MyFlameProvider())
+    BlocProvider(create: (context) => SuplyBloc(),
+       child: GameWidget(game: MyFlameProvider()),
+    ),
     );
 }

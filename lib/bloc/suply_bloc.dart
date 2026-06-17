@@ -5,23 +5,24 @@ import '../data/database.dart';
 import 'event_state/suply_es.dart';
 
 class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
-  List<CrystalPart> suply;
+  List<CrystalPart> suply = [];
   var data = Database();
 
-  SuplyBloc(this.suply) : super(SuplyUpdatedState(suply)) {
+  SuplyBloc() : super(SuplyInitialState()) {
     on<SuplyInitialEvent>(_suplyInitial);
     on<SuplyGetCPEvent>(_getCrystalPart);
     on<SuplyPreviewEvent>(_previewCrystalPart);
   }
 
   _suplyInitial(SuplyInitialEvent event, Emitter<SuplyState> emit) {
-    var suply = _generateSuply();
+    suply = _generateSuply();
     emit(SuplyUpdatedState(suply));
   }
 
   List<CrystalPart> _generateSuply() {
     List<CrystalPart> localSuply = [];
-    
+    var dataLength = data.getDataLength();
+    print("suply_bloc. _generateSuply: dataLength == $dataLength");
     return localSuply;
   }
 
