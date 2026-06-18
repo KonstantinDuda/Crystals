@@ -33,7 +33,7 @@ class CrystalPart{
 
   @override
   String toString() {
-    var result = "id: $id, name: $name, description: $description \n";
+    var result = "id: $id, \t side: $side, \t type: $type, value: $value \n";
     return result;
   }
 }

@@ -1,16 +1,20 @@
 import 'dart:ui';
 
+import 'package:crystal/data/crystal.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 //import 'package:flame/events.dart';
 
+import '../bloc/suply_bloc.dart';
+import '../bloc/event_state/suply_es.dart';
 import '../bloc/provider_flame.dart';
 
-class TwoPl extends PositionComponent with HasGameReference<MyFlameProvider> {
-  // @override
-  // void onMount() {
-  //   super.onMount();
-  // _layoutCells();
-  // }
+class TwoPl extends PositionComponent
+    with
+        HasGameReference<MyFlameProvider>,
+        FlameBlocListenable<SuplyBloc, SuplyState> {
+  List<CrystalPart> suply = [];
 
   @override
   void onGameResize(Vector2 size) {
@@ -23,32 +27,55 @@ class TwoPl extends PositionComponent with HasGameReference<MyFlameProvider> {
 
   void _layoutCells() {
     final double padding = 20.0;
-//  final int cellCount = 8;
+    //  final int cellCount = 8;
 
-final double cellWidth = (game.size.x - (padding * 3)) / 9;
-final double cellHeight = (game.size.y - (padding * 4)) / 6;
+    final double cellWidth = (game.size.x - (padding * 3)) / 9;
+    final double cellHeight = (game.size.y - (padding * 4)) / 6;
 
-final List<int> rows = [2, 1, 2, 1, 2];
+    final List<int> rows = [2, 1, 2, 1, 2];
 
-double yOffset = 30.0;
+    double yOffset = 30.0;
 
-    for(int i = 0; i < rows.length; i++) {
+    for (int i = 0; i < rows.length; i++) {
       int cellsInRow = rows[i];
       double rowWidth = (cellWidth * cellsInRow) + (padding * (cellsInRow - 1));
       double startX = (game.size.x - rowWidth) / 2;
 
-      for(int j = 0; j < rows[i]; j++) {
-        add(CrystalCell(size: Vector2(cellWidth, cellHeight))
-        ..position = Vector2(startX + j * (cellWidth + padding), yOffset));
+      for (int j = 0; j < rows[i]; j++) {
+        add(
+          CrystalCell(size: Vector2(cellWidth, cellHeight))
+            ..position = Vector2(startX + j * (cellWidth + padding), yOffset),
+        );
       }
       yOffset += cellHeight + padding;
     }
   }
 
   @override
+  void onMount() {
+    super.onMount();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isMounted) {
+        final initialState = bloc.state;
+        bloc.add(SuplyInitialEvent());
+        print("TwoPl onMount. initialState == $initialState");
+      }
+    });
+  }
+
+  @override
+  void onNewState(SuplyState state) {
+    super.onNewState(state);
+    if(state is SuplyUpdatedState) {
+      suply = state.updatedSuply;
+    }
+    print("TwoPl new state");
+  }
+
+  @override
   void render(Canvas canvas) {
     //super.render(canvas);
-
 
     final bgPaint = Paint()..color = const Color.fromARGB(255, 15, 15, 20);
     final bgStartX = game.size.x / 3;
@@ -65,43 +92,45 @@ class CrystalCell extends PositionComponent {
   void render(Canvas canvas) {
     //super.render(canvas);
     final borderPaint = Paint()
-    ..color = const Color.fromARGB(255, 100, 100, 120)
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2.0;
+      ..color = const Color.fromARGB(255, 100, 100, 120)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
 
-   // 1. Рамка всієї комірки
-  canvas.drawRect(size.toRect(), borderPaint);
+    // 1. Рамка всієї комірки
+    canvas.drawRect(size.toRect(), borderPaint);
 
-  // 2. Горизонтальний роздільник між ціною та слотами (на 30% висоти)
-  final double priceSectionHeight = size.y * 0.3;
-  canvas.drawLine(
-    Offset(0, priceSectionHeight),
-    Offset(size.x, priceSectionHeight),
-    borderPaint,
-  );
+    // 2. Горизонтальний роздільник між ціною та слотами (на 30% висоти)
+    final double priceSectionHeight = size.y * 0.3;
+    canvas.drawLine(
+      Offset(0, priceSectionHeight),
+      Offset(size.x, priceSectionHeight),
+      borderPaint,
+    );
 
-  // 3. Рисочки для розділення 3-х слотів
-  // Нижня ділянка починається від 30% до 100%
-  final double slotsSectionHeight = size.y - priceSectionHeight;
-  final double lineVerticalSize = slotsSectionHeight * 0.3; // Рисочка = 30% від висоти слотів
-  
-  // Початок Y для рисочок (середина нижньої ділянки)
-  final double lineStartY = priceSectionHeight + (slotsSectionHeight - lineVerticalSize) / 2;
+    // 3. Рисочки для розділення 3-х слотів
+    // Нижня ділянка починається від 30% до 100%
+    final double slotsSectionHeight = size.y - priceSectionHeight;
+    final double lineVerticalSize =
+        slotsSectionHeight * 0.3; // Рисочка = 30% від висоти слотів
 
-  // Малюємо дві рисочки на 1/3 та 2/3 ширини комірки
-  final double slotWidth = size.x / 3;
-  
-  canvas.drawLine(
-    Offset(slotWidth, lineStartY),
-    Offset(slotWidth, lineStartY + lineVerticalSize),
-    borderPaint..strokeWidth = 1.5,
-  );
-  
-  canvas.drawLine(
-    Offset(slotWidth * 2, lineStartY),
-    Offset(slotWidth * 2, lineStartY + lineVerticalSize),
-    borderPaint..strokeWidth = 1.5,
-  );
+    // Початок Y для рисочок (середина нижньої ділянки)
+    final double lineStartY =
+        priceSectionHeight + (slotsSectionHeight - lineVerticalSize) / 2;
+
+    // Малюємо дві рисочки на 1/3 та 2/3 ширини комірки
+    final double slotWidth = size.x / 3;
+
+    canvas.drawLine(
+      Offset(slotWidth, lineStartY),
+      Offset(slotWidth, lineStartY + lineVerticalSize),
+      borderPaint..strokeWidth = 1.5,
+    );
+
+    canvas.drawLine(
+      Offset(slotWidth * 2, lineStartY),
+      Offset(slotWidth * 2, lineStartY + lineVerticalSize),
+      borderPaint..strokeWidth = 1.5,
+    );
   }
 }
 
