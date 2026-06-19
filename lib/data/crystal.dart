@@ -1,6 +1,6 @@
 // Part of Crystal data model
 enum PartType {money, weapon, modifier}
-enum PartSide {left, center, right}
+enum PartSide {left, center, right, all, nowhere}
 
 class CrystalPart{
   int id;
@@ -27,13 +27,13 @@ class CrystalPart{
     this.description = "", 
     this.price = 0,
     this.type = PartType.money,
-    this.side = PartSide.center,
+    this.side = PartSide.nowhere,
     this.value = 0,
   });
 
   @override
   String toString() {
-    var result = "id: $id, \t side: $side, \t type: $type, value: $value \n";
+    var result = "id: $id, \t price: $price \t side: $side, \t type: $type, value: $value \n";
     return result;
   }
 }
@@ -79,10 +79,10 @@ class Crystal {
     }
   }
 
-  void activate(Player player) {
-    List<CrystalPart> weaponParts = [leftPart, centerPart, rightPart]
-        .where((p) => p.type == PartType.weapon)
-        .toList();
+  // void activate(Player player) {
+  //   List<CrystalPart> weaponParts = [leftPart, centerPart, rightPart]
+  //       .where((p) => p.type == PartType.weapon)
+  //       .toList();
 /*
     // 1. Логіка зброї
     if (weaponParts.length == 1) {
@@ -97,7 +97,7 @@ class Crystal {
     if (right.type == PartType.money) {
       player.bank += right.value;
     }*/
-  }
+  //}
 
 }
 

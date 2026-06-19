@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:async';
 
 import 'package:crystal/data/crystal.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -15,25 +15,36 @@ class TwoPl extends PositionComponent
         HasGameReference<MyFlameProvider>,
         FlameBlocListenable<SuplyBloc, SuplyState> {
   List<CrystalPart> suply = [];
+  final List<CrystalCell> _cells = [];
 
   @override
-  void onGameResize(Vector2 size) {
-    super.onGameResize(size);
+  FutureOr<void> onLoad() {
+    _initCells();
+  }
 
-    removeAll(children);
-
+  void _initCells() {
+    final List<int> rows = [2, 1, 2, 1, 2];
+    for (int i = 0; i < rows.length; i++) {
+      for (int j = 0; j < rows[i]; j++) {
+        final cell = CrystalCell(
+          size: Vector2.zero(),
+          part: CrystalPart.empty(),
+        );
+        add(cell);
+        _cells.add(cell);
+      }
+    }
     _layoutCells();
   }
 
   void _layoutCells() {
     final double padding = 20.0;
-    //  final int cellCount = 8;
 
     final double cellWidth = (game.size.x - (padding * 3)) / 9;
     final double cellHeight = (game.size.y - (padding * 4)) / 6;
 
     final List<int> rows = [2, 1, 2, 1, 2];
-
+    int cellIndex = 0;
     double yOffset = 30.0;
 
     for (int i = 0; i < rows.length; i++) {
@@ -42,12 +53,28 @@ class TwoPl extends PositionComponent
       double startX = (game.size.x - rowWidth) / 2;
 
       for (int j = 0; j < rows[i]; j++) {
-        add(
-          CrystalCell(size: Vector2(cellWidth, cellHeight))
-            ..position = Vector2(startX + j * (cellWidth + padding), yOffset),
-        );
+        // final cell =
+        //   CrystalCell(size: Vector2(cellWidth, cellHeight), part: CrystalPart.empty())
+        //     ..position = Vector2(startX + j * (cellWidth + padding), yOffset);
+        // add(cell);
+        // _cells.add(cell);
+        final cell = _cells[cellIndex];
+        cell.size = Vector2(cellWidth, cellHeight);
+        cell.position = Vector2(startX + j * (cellWidth + padding), yOffset);
+        cellIndex++;
       }
       yOffset += cellHeight + padding;
+    }
+  }
+
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+
+    //removeAll(children);
+
+    if (_cells.isNotEmpty) {
+      _layoutCells();
     }
   }
 
@@ -66,9 +93,18 @@ class TwoPl extends PositionComponent
 
   @override
   void onNewState(SuplyState state) {
-    super.onNewState(state);
-    if(state is SuplyUpdatedState) {
+    //super.onNewState(state);
+    if (state is SuplyUpdatedState) {
+      //removeAll(children);
       suply = state.updatedSuply;
+      print("TwoPl onNewState: $suply ");
+      for (int i = 0; i < suply.length; i++) {
+        // add(CrystalCell(
+        //   size: Vector2(100, 120),
+        //   part: suply[i],
+        // ));
+        _cells[i].updatePart(suply[i]);
+      }
     }
     print("TwoPl new state");
   }
@@ -85,8 +121,48 @@ class TwoPl extends PositionComponent
 
 class CrystalCell extends PositionComponent {
   final int horizontalSlots = 3;
+  CrystalPart part;
 
-  CrystalCell({required Vector2 size}) : super(size: size);
+  CrystalCell({required Vector2 size, required this.part}) : super(size: size);
+
+  // Функція для малювання фігур. Можна буде використати для кристалів гравців
+  void drawShape(Canvas canvas, PartType type, Rect slotRect) {
+    final Paint paint = Paint()..style = PaintingStyle.fill;
+
+    switch (type) {
+      case PartType.weapon:
+        paint.color = Colors.red;
+        // Малюємо трикутник
+        final path = Path()
+          ..moveTo(slotRect.center.dx, slotRect.top + 5)
+          ..lineTo(slotRect.right - 5, slotRect.bottom - 5)
+          ..lineTo(slotRect.left + 5, slotRect.bottom - 5)
+          ..close();
+        canvas.drawPath(path, paint);
+        break;
+      case PartType.money:
+        paint.color = Colors.green;
+        // Малюємо ромб
+        canvas.drawPath(
+          Path()..addPolygon([
+            Offset(slotRect.center.dx, slotRect.top + 5),
+            Offset(slotRect.right - 5, slotRect.center.dy),
+            Offset(slotRect.center.dx, slotRect.bottom - 5),
+            Offset(slotRect.left + 5, slotRect.center.dy),
+          ], true),
+          paint,
+        );
+        break;
+      case PartType.modifier:
+        paint.color = Colors.yellow;
+        canvas.drawCircle(slotRect.center, slotRect.width / 4, paint);
+        break;
+    }
+  }
+
+  void updatePart(CrystalPart newPart) {
+    part = newPart;
+  }
 
   @override
   void render(Canvas canvas) {
@@ -131,72 +207,41 @@ class CrystalCell extends PositionComponent {
       Offset(slotWidth * 2, lineStartY + lineVerticalSize),
       borderPaint..strokeWidth = 1.5,
     );
-  }
-}
 
-/*class TwoPl extends PositionComponent {
-  static const int gridSize = 3;
-  static const double cellSize = 100.0;
-  static const double spacing = 10.0;
+    // 1. Малюємо ціну (TextPainter для тексту)
+    final textSpan = TextSpan(
+      text: part.price.toString(),
+      style: const TextStyle(color: Colors.white, fontSize: 12),
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    textPainter.paint(canvas, Offset(5, 5));
 
-  static const double totalSize = (gridSize * cellSize) + ((gridSize + 1) * spacing);
+    // 2. Визначаємо, в яких слотах малювати (0, 1, 2)
+    List<int> targetSlots = [];
+    if (part.side == PartSide.left)
+      targetSlots = [0];
+    else if (part.side == PartSide.center)
+      targetSlots = [1];
+    else if (part.side == PartSide.right)
+      targetSlots = [2];
+    else if (part.side == PartSide.all)
+      targetSlots = [0, 1, 2];
 
-  TwoPl() : super(size: Vector2.all(totalSize), anchor: Anchor.center);
+    // 3. Малюємо фігуру у відповідному слоті
+    final slotHeight = size.y * 0.7;
+    final startY = size.y * 0.3;
 
-@override
-  void onMount() {
-    super.onMount();
-    position = findGame()!.size / 2; // Центруємо компонент на екрані
-  }
-
-  @override
-  void render(Canvas canvas) {
-    //super.render(canvas);
-  
-    final paint = Paint()..color = const Color.fromARGB(255, 30, 30, 40);
-  canvas.drawRect(size.toRect(), paint);
-
-  final borderPaint = Paint()
-    ..color = const Color.fromARGB(255, 80, 80, 100)
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2.0;
-
-  canvas.drawRect(size.toRect(), borderPaint);
-  }
-
-  @override
-  FutureOr<void> onLoad() {
-    for(int i = 0; i < gridSize; i++) {
-      for(int j = 0; j < gridSize; j++) {
-        add(Crystal(position: Vector2(
-          spacing + j * (cellSize + spacing),
-          spacing + i * (cellSize + spacing),
-        )));
-      }
+    for (int slot in targetSlots) {
+      final rect = Rect.fromLTWH(
+        slot * slotWidth + 5,
+        startY + 5,
+        slotWidth - 10,
+        slotHeight - 10,
+      );
+      drawShape(canvas, part.type, rect);
     }
   }
 }
-
-class Crystal extends PositionComponent with HoverCallbacks{
-  bool isHover = false;
-  
-  Crystal({required Vector2 position}) : super(size: Vector2.all(TwoPl.cellSize), position: position);
-
-@override
-  void onHoverEnter() => isHover = true;
-
-  @override
-  void onHoverExit() => isHover = false;
-
-  @override
-  void render(Canvas canvas) {
-    //super.render(canvas);
-
-    final paint = Paint()
-      ..color = isHover 
-      ? const Color.fromARGB(255, 100, 200, 255)
-      : const Color.fromARGB(255, 50, 50, 70);
-
-    canvas.drawRRect(RRect.fromRectAndRadius(size.toRect(), const Radius.circular(8)), paint);
-  }
-}*/

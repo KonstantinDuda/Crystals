@@ -12,7 +12,7 @@ class MyFlameProvider extends FlameGame {
   late final RouterComponent router;
   //final SuplyBloc suplyBloc;
 
-@override
+  @override
   Color backgroundColor() {
     return Color.fromARGB(255, 26, 28, 41);
   }
@@ -21,15 +21,18 @@ class MyFlameProvider extends FlameGame {
   Future<void> onLoad() async {
     router = RouterComponent(
       routes: {
-        'menu': OverlayRoute((context, game) => HomeMenu(
-    onTwoPlayers: () => router.pushReplacementNamed('twoPlayers'),
-    onVsAi: () => router.pushNamed('vsAi'),
-  ),), 
-        //'twoPlayers': Route(() => TwoPl()),
-        'twoPlayers': Route(() => FlameBlocProvider<SuplyBloc, SuplyState>(
-          create: () => SuplyBloc(),
-          children: [TwoPl()],
-        )),
+        'menu': OverlayRoute(
+          (context, game) => HomeMenu(
+            onTwoPlayers: () => router.pushReplacementNamed('twoPlayers'),
+            onVsAi: () => router.pushNamed('vsAi'),
+          ),
+        ),
+        'twoPlayers': Route(
+          () => FlameBlocProvider<SuplyBloc, SuplyState>(
+            create: () => SuplyBloc(),
+            children: [TwoPl()],
+          ),
+        ),
         'vsAi': Route(GameScreen.new),
       },
       initialRoute: 'menu',
