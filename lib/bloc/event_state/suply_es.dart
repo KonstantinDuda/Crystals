@@ -36,7 +36,7 @@ class SuplyState extends Equatable {
 class SuplyInitialState extends SuplyState {}
 
 class SuplyUpdatedState extends SuplyState {
-  final List<CrystalPart> updatedSuply;
+  final List<List<CrystalPart>> updatedSuply;
 
   SuplyUpdatedState(this.updatedSuply);
 

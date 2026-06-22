@@ -7,7 +7,7 @@ import '../data/database.dart';
 import 'event_state/suply_es.dart';
 
 class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
-  List<CrystalPart> suply = [];
+  List<List<CrystalPart>> suply = [];
   var data = Database();
 
   SuplyBloc() : super(SuplyInitialState()) {
@@ -16,38 +16,40 @@ class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
     on<SuplyPreviewEvent>(_previewCrystalPart);
   }
 
-  _suplyInitial(SuplyInitialEvent event, Emitter<SuplyState> emit) {
+  void _suplyInitial(SuplyInitialEvent event, Emitter<SuplyState> emit) {
     _generateSuply();
     emit(SuplyUpdatedState(List.from(suply)));
   }
 
-  /*List<CrystalPart>*/void _generateSuply() {
-    //List<CrystalPart> localSuply = [];
-    //var dataLength = data.getDataLength();
-    //print("suply_bloc. _generateSuply: dataLength == $dataLength");
-
+  void _generateSuply() {
     var money = data.getMoney();
     //print("suply_bloc. _generateSuply: dataLength == $money");
-    suply.add(money[Random().nextInt(3)]);
-    suply.add(money[Random().nextInt(3) + 2]);
-    suply.add(money[Random().nextInt(3) + 4]);
+    var moneyPart = money[Random().nextInt(3)];
+    suply.add([moneyPart, moneyPart, moneyPart, moneyPart, moneyPart]);
+    moneyPart = money[Random().nextInt(3) + 2];
+    suply.add([moneyPart, moneyPart, moneyPart, moneyPart, moneyPart]);
+    moneyPart = money[Random().nextInt(3) + 4];
+    suply.add([moneyPart, moneyPart, moneyPart, moneyPart, moneyPart]);
 
     var weapon = data.getWeapon();
     //print("suply_bloc. _generateSuply: dataLength == $weapon");
-    suply.add(weapon[Random().nextInt(3)]);
-    suply.add(weapon[Random().nextInt(3) + 2]);
-    suply.add(weapon[Random().nextInt(3) + 4]);
+    var weaponPart = weapon[Random().nextInt(3)];
+    suply.add([weaponPart, weaponPart, weaponPart, weaponPart, weaponPart]);
+    weaponPart = weapon[Random().nextInt(3) + 2]; 
+    suply.add([weaponPart, weaponPart, weaponPart, weaponPart, weaponPart]);
+    weaponPart = weapon[Random().nextInt(3) + 4];
+    suply.add([weaponPart, weaponPart, weaponPart, weaponPart, weaponPart]);
     //print("SuplyBloc. _generateSuply. suply == $suply");
     //return localSuply;
   }
 
-  _getCrystalPart(SuplyGetCPEvent event, Emitter<SuplyState> emit) {
+  void _getCrystalPart(SuplyGetCPEvent event, Emitter<SuplyState> emit) {
     try {
       if (event.index < 0 || event.index >= suply.length) {
         emit(SuplyErrorState("Invalid index: ${event.index}"));
         return;
       }
-      var updatedSuply = List<CrystalPart>.from(suply);
+      var updatedSuply = List<List<CrystalPart>>.from(suply);
       updatedSuply.removeAt(event.index);
       emit(SuplyUpdatedState(updatedSuply));
     } catch (e) {
@@ -55,13 +57,13 @@ class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
     }
   }
 
-  _previewCrystalPart(SuplyPreviewEvent event, Emitter<SuplyState> emit) {
+  void _previewCrystalPart(SuplyPreviewEvent event, Emitter<SuplyState> emit) {
     try {
       if (event.index < 0 || event.index >= suply.length) {
         emit(SuplyErrorState("Invalid index: ${event.index}"));
         return;
       }
-      var updatedSuply = List<CrystalPart>.from(suply);
+      var updatedSuply = List<List<CrystalPart>>.from(suply);
       updatedSuply.removeAt(event.index);
       emit(SuplyUpdatedState(updatedSuply));
     } catch (e) {

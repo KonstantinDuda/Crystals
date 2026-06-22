@@ -1,123 +1,7 @@
-import 'dart:async';
-
-import 'package:crystal/data/crystal.dart';
-import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-//import 'package:flame/events.dart';
 
-import '../bloc/suply_bloc.dart';
-import '../bloc/event_state/suply_es.dart';
-import '../bloc/provider_flame.dart';
-
-class TwoPl extends PositionComponent
-    with
-        HasGameReference<MyFlameProvider>,
-        FlameBlocListenable<SuplyBloc, SuplyState> {
-  List<CrystalPart> suply = [];
-  final List<CrystalCell> _cells = [];
-
-  @override
-  FutureOr<void> onLoad() {
-    _initCells();
-  }
-
-  void _initCells() {
-    final List<int> rows = [2, 1, 2, 1, 2];
-    for (int i = 0; i < rows.length; i++) {
-      for (int j = 0; j < rows[i]; j++) {
-        final cell = CrystalCell(
-          size: Vector2.zero(),
-          part: CrystalPart.empty(),
-        );
-        add(cell);
-        _cells.add(cell);
-      }
-    }
-    _layoutCells();
-  }
-
-  void _layoutCells() {
-    final double padding = 20.0;
-
-    final double cellWidth = (game.size.x - (padding * 3)) / 9;
-    final double cellHeight = (game.size.y - (padding * 4)) / 6;
-
-    final List<int> rows = [2, 1, 2, 1, 2];
-    int cellIndex = 0;
-    double yOffset = 30.0;
-
-    for (int i = 0; i < rows.length; i++) {
-      int cellsInRow = rows[i];
-      double rowWidth = (cellWidth * cellsInRow) + (padding * (cellsInRow - 1));
-      double startX = (game.size.x - rowWidth) / 2;
-
-      for (int j = 0; j < rows[i]; j++) {
-        // final cell =
-        //   CrystalCell(size: Vector2(cellWidth, cellHeight), part: CrystalPart.empty())
-        //     ..position = Vector2(startX + j * (cellWidth + padding), yOffset);
-        // add(cell);
-        // _cells.add(cell);
-        final cell = _cells[cellIndex];
-        cell.size = Vector2(cellWidth, cellHeight);
-        cell.position = Vector2(startX + j * (cellWidth + padding), yOffset);
-        cellIndex++;
-      }
-      yOffset += cellHeight + padding;
-    }
-  }
-
-  @override
-  void onGameResize(Vector2 size) {
-    super.onGameResize(size);
-
-    //removeAll(children);
-
-    if (_cells.isNotEmpty) {
-      _layoutCells();
-    }
-  }
-
-  @override
-  void onMount() {
-    super.onMount();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (isMounted) {
-        final initialState = bloc.state;
-        bloc.add(SuplyInitialEvent());
-        print("TwoPl onMount. initialState == $initialState");
-      }
-    });
-  }
-
-  @override
-  void onNewState(SuplyState state) {
-    //super.onNewState(state);
-    if (state is SuplyUpdatedState) {
-      //removeAll(children);
-      suply = state.updatedSuply;
-      print("TwoPl onNewState: $suply ");
-      for (int i = 0; i < suply.length; i++) {
-        // add(CrystalCell(
-        //   size: Vector2(100, 120),
-        //   part: suply[i],
-        // ));
-        _cells[i].updatePart(suply[i]);
-      }
-    }
-    print("TwoPl new state");
-  }
-
-  @override
-  void render(Canvas canvas) {
-    //super.render(canvas);
-
-    final bgPaint = Paint()..color = const Color.fromARGB(255, 15, 15, 20);
-    final bgStartX = game.size.x / 3;
-    canvas.drawRect(Rect.fromLTWH(bgStartX, 0, bgStartX, game.size.y), bgPaint);
-  }
-}
+import '../../data/crystal.dart';
 
 class CrystalCell extends PositionComponent {
   final int horizontalSlots = 3;
@@ -209,26 +93,40 @@ class CrystalCell extends PositionComponent {
     );
 
     // 1. Малюємо ціну (TextPainter для тексту)
+
+    // 1. Адаптивний розмір шрифту: наприклад, 20% від висоти верхньої секції
+    final double responsiveFontSize = priceSectionHeight * 0.45;
+
     final textSpan = TextSpan(
       text: part.price.toString(),
-      style: const TextStyle(color: Colors.white, fontSize: 12),
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: responsiveFontSize,
+        fontWeight: FontWeight.bold,
+      ),
     );
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
     )..layout();
-    textPainter.paint(canvas, Offset(5, 5));
+
+    // 2. Центрування: (ширина комірки - ширина тексту) / 2
+    final double centerX = (size.x - textPainter.width) / 2;
+    // Центрування по вертикалі в межах верхніх 30%
+    final double centerY = (priceSectionHeight - textPainter.height) / 2;
+    textPainter.paint(canvas, Offset(centerX, centerY));
 
     // 2. Визначаємо, в яких слотах малювати (0, 1, 2)
     List<int> targetSlots = [];
-    if (part.side == PartSide.left)
+    if (part.side == PartSide.left) {
       targetSlots = [0];
-    else if (part.side == PartSide.center)
+    } else if (part.side == PartSide.center) {
       targetSlots = [1];
-    else if (part.side == PartSide.right)
+    } else if (part.side == PartSide.right) {
       targetSlots = [2];
-    else if (part.side == PartSide.all)
+    } else if (part.side == PartSide.all) {
       targetSlots = [0, 1, 2];
+    }
 
     // 3. Малюємо фігуру у відповідному слоті
     final slotHeight = size.y * 0.7;

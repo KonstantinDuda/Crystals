@@ -1,12 +1,12 @@
-import 'package:crystal/bloc/suply_bloc.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart' hide OverlayRoute, Route;
 
 import '../view/menu.dart';
-import '../view/two_pl.dart';
+import '../view/two_pl/two_pl.dart';
 import 'event_state/suply_es.dart';
+import 'suply_bloc.dart';
 
 class MyFlameProvider extends FlameGame {
   late final RouterComponent router;
