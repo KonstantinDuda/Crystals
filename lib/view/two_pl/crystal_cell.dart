@@ -1,13 +1,18 @@
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
+import '../../bloc/provider_flame.dart';
 import '../../data/crystal.dart';
 
-class CrystalCell extends PositionComponent {
+class CrystalCell extends PositionComponent with HoverCallbacks {
   final int horizontalSlots = 3;
   CrystalPart part;
+  int count;
+  bool isHovered = false;
 
-  CrystalCell({required Vector2 size, required this.part}) : super(size: size);
+  CrystalCell({required Vector2 size, required this.part, this.count = 0})
+    : super(size: size);
 
   // Функція для малювання фігур. Можна буде використати для кристалів гравців
   void drawShape(Canvas canvas, PartType type, Rect slotRect) {
@@ -44,8 +49,27 @@ class CrystalCell extends PositionComponent {
     }
   }
 
-  void updatePart(CrystalPart newPart) {
+  void updatePart(CrystalPart newPart, int partCount) {
     part = newPart;
+    count = partCount;
+  }
+
+  @override
+  void onHoverEnter() {
+    //super.onHoverEnter();
+    isHovered = true;
+    // Можна додати візуальний ефект: трохи збільшити розмір
+    scale = Vector2.all(1.05);
+    final globalOffset = Offset(absolutePosition.x, absolutePosition.y);
+    (findGame() as MyFlameProvider).showTooltip(part, count, globalOffset);
+  }
+
+  @override
+  void onHoverExit() {
+    //super.onHoverExit();
+    isHovered = false;
+    scale = Vector2.all(1.0);
+    (findGame() as MyFlameProvider).hideTooltip();
   }
 
   @override
@@ -141,5 +165,42 @@ class CrystalCell extends PositionComponent {
       );
       drawShape(canvas, part.type, rect);
     }
+
+    // Якщо наведено, малюємо рамку іншого кольору
+    if (isHovered) {
+      final paint = Paint()
+        ..color = Colors.white.withValues(alpha: 0.3)
+        ..style = PaintingStyle.fill;
+      canvas.drawRect(size.toRect(), paint);
+
+      // Відображення "кількості" у куточку, якщо це стопка (stack)
+      if (count > 0) _drawCounter(canvas);
+    }
+  }
+
+  void _drawCounter(Canvas canvas) {
+    // Стиль тексту для лічильника
+    final textSpan = TextSpan(
+      text: "x$count",
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        backgroundColor: Colors.black54, // Щоб текст було видно на будь-якому фоні
+      ),
+    );
+    
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    // Малюємо в правому нижньому куті комірки
+    final offset = Offset(
+      size.x - textPainter.width - 5,
+      size.y - textPainter.height - 5,
+    );
+    
+    textPainter.paint(canvas, offset);
   }
 }

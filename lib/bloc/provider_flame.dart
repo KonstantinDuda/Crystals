@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart' hide OverlayRoute, Route;
 
+import '../data/crystal.dart';
 import '../view/menu.dart';
 import '../view/two_pl/two_pl.dart';
 import 'event_state/suply_es.dart';
@@ -38,6 +39,35 @@ class MyFlameProvider extends FlameGame {
       initialRoute: 'menu',
     );
     add(router);
+  }
+
+  // 1. Метод для показу підказки
+void showTooltip(CrystalPart part, int count, Offset position) {
+  overlays.addEntry('tooltip', (context, game) {
+    return Positioned(
+      left: position.dx + 20, // Зсув від мишки
+      top: position.dy + 20,
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          color: Colors.black87,
+          child: Column(
+            children: [
+              Text("Кількість: $count", style: TextStyle(color: Colors.white)),
+              Text(part.description, style: TextStyle(color: Colors.cyan)),
+              //Text(part.description, style: TextStyle(color: Colors.grey)),
+            ],
+          ),
+        ),
+      ),
+    );
+  });
+  overlays.add('tooltip');
+}
+
+  void hideTooltip() {
+    overlays.remove('tooltip');
   }
 }
 

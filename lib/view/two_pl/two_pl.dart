@@ -89,9 +89,9 @@ class TwoPl extends PositionComponent
     //super.onNewState(state);
     if (state is SuplyUpdatedState) {
       suply = state.updatedSuply;
-      print("TwoPl onNewState: $suply ");
+      //print("TwoPl onNewState: $suply ");
       for (int i = 0; i < suply.length; i++) {
-        _cells[i].updatePart(suply[i][0]);
+        _cells[i].updatePart(suply[i][0], suply[i].length);
       }
     }
     print("TwoPl new state");

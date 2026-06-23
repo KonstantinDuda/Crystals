@@ -34,8 +34,8 @@ class Database {
       var damage = 1;
 
       var localName = "Crystal";
-      var descMoney = "Get n money";
-      var descWeapon = "Deal n damage";
+      var descMoney = "Get $money money";
+      var descWeapon = "Deal $damage damage";
 
       if (i >= 2 && i < 5) {
         var side = getSide();
@@ -51,6 +51,7 @@ class Database {
       }
       if (i >= 4 && i < 8) {
         money = 2;
+        descMoney = "Get $money money";
         var side = getSide();
         var newPart = createCrystalPart(
           localName,
@@ -75,6 +76,7 @@ class Database {
       }
       if (i >= 7 && i < 12) {
         money = 3;
+        descMoney = "Get $money money";
         var side = getSide();
         var newPart = createCrystalPart(
           localName,
@@ -87,6 +89,7 @@ class Database {
         _moneyParts.add(newPart);
 
         damage = 2;
+        descWeapon = "Deal $damage damage";
         var weapSide = getSide();
         var newWeap = createCrystalPart(
           localName,
@@ -100,6 +103,7 @@ class Database {
       }
       if (i >= 11 && i <= 13) {
         damage = 3;
+        descWeapon = "Deal $damage damage";
         var weapSide = getSide();
         var newWeap = createCrystalPart(
           localName,
