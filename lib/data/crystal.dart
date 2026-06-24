@@ -100,22 +100,3 @@ class Crystal {
   //}
 
 }
-
-// Player data model (заглушка для демонстрації)
-class Player {
-  int id;
-  int health;
-  int toolHealth;
-  int money;
-  List<Crystal> crystals;
-  String ultimate;
-  
-  Player({
-    required this.id,
-    required this.health,
-    required this.toolHealth,
-    required this.money,
-    required this.crystals,
-    required this.ultimate,
-  }); 
-}
