@@ -6,13 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/event_state/suply_es.dart';
 import 'bloc/provider_flame.dart';
+import 'data/database.dart';
 import 'observer.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = SimpleBlocObserver();
-  //var data = Database();
+  var data = Database();
+  data.loadData;
 
   runApp(//GameWidget(game: MyFlameProvider())
     BlocProvider(create: (_) => SuplyBloc()..add(SuplyInitialEvent()),

@@ -22,7 +22,7 @@ class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
   }
 
   void _generateSuply() {
-    var money = data.getMoney();
+    var money = data.moneyParts;
     //print("suply_bloc. _generateSuply: dataLength == $money");
     var moneyPart = money[Random().nextInt(3)];
     suply.add([moneyPart, moneyPart, moneyPart, moneyPart, moneyPart]);
@@ -31,7 +31,7 @@ class SuplyBloc extends Bloc<SuplyEvent, SuplyState> {
     moneyPart = money[Random().nextInt(3) + 4];
     suply.add([moneyPart, moneyPart, moneyPart, moneyPart, moneyPart]);
 
-    var weapon = data.getWeapon();
+    var weapon = data.weaponParts;
     //print("suply_bloc. _generateSuply: dataLength == $weapon");
     var weaponPart = weapon[Random().nextInt(3)];
     suply.add([weaponPart, weaponPart, weaponPart, weaponPart, weaponPart]);

@@ -1,0 +1,186 @@
+{
+  "money_parts": [
+    {
+      "id": 1,
+      "name": "Crystal part",
+      "description": "Get 1 money",
+      "price": 2,
+      "type": "money",
+      "side": "left",
+      "value": 1
+    },
+    {
+      "id": 2,
+      "name": "Crystal part",
+      "description": "Get 1 money",
+      "price": 3,
+      "type": "money",
+      "side": "left",
+      "value": 1
+    },
+    {
+      "id": 3,
+      "name": "Crystal part",
+      "description": "Get 1 money",
+      "price": 4,
+      "type": "money",
+      "side": "center",
+      "value": 1
+    },
+    {
+      "id": 4,
+      "name": "Crystal part",
+      "description": "Get 2 money",
+      "price": 5,
+      "type": "money",
+      "side": "center",
+      "value": 2
+    },
+    {
+      "id": 6,
+      "name": "Crystal part",
+      "description": "Get 2 money",
+      "price": 6,
+      "type": "money",
+      "side": "center",
+      "value": 2
+    },
+    {
+      "id": 8,
+      "name": "Crystal part",
+      "description": "Get 2 money",
+      "price": 7,
+      "type": "money",
+      "side": "left",
+      "value": 2
+    },
+    {
+      "id": 10,
+      "name": "Crystal part",
+      "description": "Get 3 money",
+      "price": 8,
+      "type": "money",
+      "side": "right",
+      "value": 3
+    },
+    {
+      "id": 12,
+      "name": "Crystal part",
+      "description": "Get 3 money",
+      "price": 9,
+      "type": "money",
+      "side": "right",
+      "value": 3
+    },
+    {
+      "id": 14,
+      "name": "Crystal part",
+      "description": "Get 3 money",
+      "price": 10,
+      "type": "money",
+      "side": "center",
+      "value": 3
+    },
+    {
+      "id": 16,
+      "name": "Crystal part",
+      "description": "Get 3 money",
+      "price": 11,
+      "type": "money",
+      "side": "center",
+      "value": 3
+    }
+  ],
+  "weapon_parts": [
+    {
+      "id": 5,
+      "name": "Crystal part",
+      "description": "Deal 2 damage",
+      "price": 5,
+      "type": "weapon",
+      "side": "center",
+      "value": 1
+    },
+    {
+      "id": 7,
+      "name": "Crystal part",
+      "description": "Deal 2 damage",
+      "price": 6,
+      "type": "weapon",
+      "side": "center",
+      "value": 1
+    },
+    {
+      "id": 9,
+      "name": "Crystal part",
+      "description": "Deal 2 damage",
+      "price": 7,
+      "type": "weapon",
+      "side": "left",
+      "value": 1
+    },
+    {
+      "id": 11,
+      "name": "Crystal part",
+      "description": "Deal 3 damage",
+      "price": 8,
+      "type": "weapon",
+      "side": "right",
+      "value": 2
+    },
+    {
+      "id": 13,
+      "name": "Crystal part",
+      "description": "Deal 3 damage",
+      "price": 9,
+      "type": "weapon",
+      "side": "right",
+      "value": 2
+    },
+    {
+      "id": 15,
+      "name": "Crystal part",
+      "description": "Deal 3 damage",
+      "price": 10,
+      "type": "weapon",
+      "side": "center",
+      "value": 2
+    },
+    {
+      "id": 17,
+      "name": "Crystal part",
+      "description": "Deal 3 damage",
+      "price": 11,
+      "type": "weapon",
+      "side": "center",
+      "value": 2
+    },
+    {
+      "id": 18,
+      "name": "Crystal part",
+      "description": "Deal 3 damage",
+      "price": 11,
+      "type": "weapon",
+      "side": "right",
+      "value": 3
+    },
+    {
+      "id": 19,
+      "name": "Crystal part",
+      "description": "Deal 1 damage",
+      "price": 12,
+      "type": "weapon",
+      "side": "center",
+      "value": 3
+    },
+    {
+      "id": 20,
+      "name": "Crystal part",
+      "description": "Deal 1 damage",
+      "price": 13,
+      "type": "weapon",
+      "side": "center",
+      "value": 3
+    }
+  ]
+}

@@ -21,6 +21,18 @@ class CrystalPart{
     required this.value,
 });
 
+  factory CrystalPart.fromJson(Map<String, dynamic> json) {
+    return CrystalPart(
+      id: json['id'], 
+      name: json['name'], 
+      description: json['description'], 
+      price: json['price'], 
+      type: PartType.values.byName(json['type']), 
+      side: PartSide.values.byName(json['side']), 
+      value: json['value'],
+    );
+  }
+
   CrystalPart.empty({
     this.id = 0, 
     this.name = "", 

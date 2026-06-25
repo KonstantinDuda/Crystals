@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
+
+import 'package:flutter/services.dart';
 
 import 'crystal.dart';
 
@@ -10,14 +13,37 @@ class Database {
   }
 
   Database._internal() {
-    _generateDatabase();
+    //_generateDatabase();
+    loadData();
   }
 
   final List<CrystalPart> _database = [];
-  final List<CrystalPart> _moneyParts = [];
-  final List<CrystalPart> _weaponParts = [];
+  List<CrystalPart> _moneyParts = [];
+  List<CrystalPart> _weaponParts = [];
 
-  void _generateDatabase() {
+  Future<void> loadData() async {
+    // Читаємо файл з папки assets
+    final String response = await rootBundle.loadString('lib/assets/crystal_parts.json');
+    final data = await json.decode(response);
+
+    // Парсимо списки з JSON
+    _moneyParts = (data['money_parts'] as List)
+        .map((item) => CrystalPart.fromJson(item))
+        .toList();
+
+    _weaponParts = (data['weapon_parts'] as List)
+        .map((item) => CrystalPart.fromJson(item))
+        .toList();
+
+    _database.addAll(_moneyParts);
+    _database.addAll(_weaponParts);
+  }
+
+  List<CrystalPart> get moneyParts => _moneyParts;
+  List<CrystalPart> get weaponParts => _weaponParts; 
+  List<CrystalPart> get database => _database;
+
+  /*void _generateDatabase() {
     PartSide getSide() {
       var side = PartSide.left;
       var rand = Random().nextInt(3);
@@ -144,7 +170,7 @@ class Database {
     }
     _database.add(newCrystal);
     return newCrystal;
-  }
+  }*/
 
   CrystalPart getCrystalPart(int id) {
     var result = _database.firstWhere(
@@ -185,11 +211,11 @@ class Database {
     return _database.length;
   }
 
-  List<CrystalPart> getMoney() {
-    return _moneyParts;
-  }
+  // List<CrystalPart> getMoney() {
+  //   return _moneyParts;
+  // }
 
-  List<CrystalPart> getWeapon() {
-    return _weaponParts;
-  }
+  // List<CrystalPart> getWeapon() {
+  //   return _weaponParts;
+  // }
 }

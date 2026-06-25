@@ -1,25 +1,19 @@
-// Player data model (заглушка для демонстрації)
 import 'crystal.dart';
 
 class Player {
-  int id;
-  int health;
-  int money;
+  final int id;
+  final int health;
+  final int money;
 
-  List<Crystal> hand;
-  List<Crystal> stack;
-  List<Crystal> reset;
+  final List<Crystal> hand;
+  final List<Crystal> stack;
+  final List<Crystal> reset;
 
-  int toolHealth;
-  int toolEnergeCount;
-  // TODO: Осередок для зброї, вірогідно варто зробити окремим 
-  // класом а сюди додавати список тих об'єктів. В них має бути 
-  // бул чи він вже відкритий чи ні, чи в нього влито енергію, ціна 
-  // відкриття, ціна фокусування, модифікатор типу додаткового урона...
+  final Tool tool;
 
-
-  int weaponSocetCount;
-  String ultimate;
+  final int energyIn;
+  final int energyToUltimate;
+  final String ultimate;
 
   Player({
     required this.id,
@@ -28,9 +22,9 @@ class Player {
     required this.hand,
     required this.stack,
     required this.reset,
-    required this.toolHealth,
-    required this.toolEnergeCount,
-    required this.weaponSocetCount,
+    required this.tool,
+    required this.energyIn,
+    required this.energyToUltimate,
     required this.ultimate,
   });
 
@@ -41,9 +35,54 @@ class Player {
     this.hand = const <Crystal>[],
     this.stack = const <Crystal>[],
     this.reset = const <Crystal>[],
-    this.toolHealth = 0,
-    this.toolEnergeCount = 0,
-    this.weaponSocetCount = 0,
+    this.tool = const Tool.empty(),
+    this.energyIn = 0,
+    this.energyToUltimate = 1000,
     this.ultimate = "",
+  });
+}
+
+class Tool {
+  final int id;
+  final int health;
+  final List<Tripod> tripods;
+
+  Tool({required this.id, required this.health, required this.tripods});
+
+  const Tool.empty({
+    this.id = 0,
+    this.health = 0,
+    this.tripods = const <Tripod> [],
+  });
+}
+
+// Підставка під зброю
+class Tripod {
+  final int id;
+  final bool isOpen;
+  final int energyToOpen;
+  final int energyToOnceUse;
+  final bool onceUseAvailable;
+  final bool isWeaponEquipped;
+  final String modifier;
+
+  Tripod({
+    required this.id,
+    required this.isOpen,
+    required this.energyToOpen,
+    required this.energyToOnceUse,
+    required this.onceUseAvailable,
+    required this.isWeaponEquipped,
+    required this.modifier,
+  });
+
+  Tripod.empty({
+    this.id = 0,
+    this.isOpen = false,
+    this.energyToOpen = 1000,
+    this.energyToOnceUse = 1000,
+    this.onceUseAvailable = false,
+    this.isWeaponEquipped = false,
+    this.modifier = "",
   });
 }
