@@ -16,22 +16,23 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   _playerInitial(PlayerInitialEvent event, Emitter<PlayerState> emit) {
     List<Crystal> localHand = [];
     List<Crystal> localStack = [];
-    Tripod tripodOne;
+    //Tripod tripodOne;
     //tripodOne.getTripod(1);
     Tool localTool = Tool.empty();
 
     player = Player(
-      id: 1, 
-      health: 30, 
-      money: 0, 
-      hand: localHand, 
-      stack: localStack, 
-      reset: [], 
-      tool: localTool, 
+      id: 1,
+      health: 30,
+      money: 0,
+      hand: localHand,
+      stack: localStack,
+      reset: [],
+      tool: localTool,
       energyIn: 0,
       energyToUltimate: 9,
-      ultimate: "Heal 3 health");
-    
+      ultimate: "Heal 3 health",
+    );
+
     emit(PlayerUpdateState(player));
   }
 }

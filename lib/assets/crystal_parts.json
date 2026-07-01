@@ -2,7 +2,7 @@
   "money_parts": [
     {
       "id": 1,
-      "name": "Crystal part",
+      "name": "Crystal",
       "description": "Get 1 money",
       "price": 2,
       "type": "money",
@@ -11,25 +11,34 @@
     },
     {
       "id": 2,
-      "name": "Crystal part",
+      "name": "Crystal",
       "description": "Get 1 money",
       "price": 3,
+      "type": "money",
+      "side": "right",
+      "value": 1
+    },
+    {
+      "id": 3,
+      "name": "Crystal",
+      "description": "Get 1 money",
+      "price": 4,
       "type": "money",
       "side": "left",
       "value": 1
     },
     {
-      "id": 3,
-      "name": "Crystal part",
-      "description": "Get 1 money",
+      "id": 4,
+      "name": "Crystal",
+      "description": "Get 2 money",
       "price": 4,
       "type": "money",
-      "side": "center",
-      "value": 1
+      "side": "right",
+      "value": 2
     },
     {
-      "id": 4,
-      "name": "Crystal part",
+      "id": 6,
+      "name": "Crystal",
       "description": "Get 2 money",
       "price": 5,
       "type": "money",
@@ -37,17 +46,17 @@
       "value": 2
     },
     {
-      "id": 6,
-      "name": "Crystal part",
+      "id": 8,
+      "name": "Crystal",
       "description": "Get 2 money",
       "price": 6,
       "type": "money",
-      "side": "center",
+      "side": "left",
       "value": 2
     },
     {
-      "id": 8,
-      "name": "Crystal part",
+      "id": 10,
+      "name": "Crystal",
       "description": "Get 2 money",
       "price": 7,
       "type": "money",
@@ -55,35 +64,44 @@
       "value": 2
     },
     {
-      "id": 10,
-      "name": "Crystal part",
-      "description": "Get 3 money",
-      "price": 8,
-      "type": "money",
-      "side": "right",
-      "value": 3
-    },
-    {
       "id": 12,
-      "name": "Crystal part",
+      "name": "Crystal",
       "description": "Get 3 money",
-      "price": 9,
+      "price": 7,
       "type": "money",
       "side": "right",
       "value": 3
     },
     {
       "id": 14,
-      "name": "Crystal part",
+      "name": "Crystal",
       "description": "Get 3 money",
-      "price": 10,
+      "price": 8,
+      "type": "money",
+      "side": "left",
+      "value": 3
+    },
+    {
+      "id": 16,
+      "name": "Crystal",
+      "description": "Get 3 money",
+      "price": 9,
       "type": "money",
       "side": "center",
       "value": 3
     },
     {
-      "id": 16,
-      "name": "Crystal part",
+      "id": 18,
+      "name": "Crystal",
+      "description": "Get 3 money",
+      "price": 10,
+      "type": "money",
+      "side": "right",
+      "value": 3
+    },
+    {
+      "id": 20,
+      "name": "Crystal",
       "description": "Get 3 money",
       "price": 11,
       "type": "money",
@@ -94,70 +112,88 @@
   "weapon_parts": [
     {
       "id": 5,
-      "name": "Crystal part",
-      "description": "Deal 2 damage",
-      "price": 5,
-      "type": "weapon",
-      "side": "center",
-      "value": 1
-    },
-    {
-      "id": 7,
-      "name": "Crystal part",
-      "description": "Deal 2 damage",
-      "price": 6,
-      "type": "weapon",
-      "side": "center",
-      "value": 1
-    },
-    {
-      "id": 9,
-      "name": "Crystal part",
-      "description": "Deal 2 damage",
-      "price": 7,
+      "name": "Crystal",
+      "description": "Deal 1 damage",
+      "price": 4,
       "type": "weapon",
       "side": "left",
       "value": 1
     },
     {
-      "id": 11,
-      "name": "Crystal part",
-      "description": "Deal 3 damage",
-      "price": 8,
+      "id": 7,
+      "name": "Crystal",
+      "description": "Deal 1 damage",
+      "price": 5,
+      "type": "weapon",
+      "side": "left",
+      "value": 1
+    },
+    {
+      "id": 9,
+      "name": "Crystal",
+      "description": "Deal 1 damage",
+      "price": 6,
       "type": "weapon",
       "side": "right",
-      "value": 2
+      "value": 1
+    },
+    {
+      "id": 11,
+      "name": "Crystal",
+      "description": "Deal 1 damage",
+      "price": 7,
+      "type": "weapon",
+      "side": "right",
+      "value": 1
     },
     {
       "id": 13,
-      "name": "Crystal part",
-      "description": "Deal 3 damage",
-      "price": 9,
+      "name": "Crystal",
+      "description": "Deal 2 damage",
+      "price": 7,
       "type": "weapon",
       "side": "right",
       "value": 2
     },
     {
       "id": 15,
-      "name": "Crystal part",
-      "description": "Deal 3 damage",
-      "price": 10,
+      "name": "Crystal",
+      "description": "Deal 2 damage",
+      "price": 8,
+      "type": "weapon",
+      "side": "left",
+      "value": 2
+    },
+    {
+      "id": 17,
+      "name": "Crystal",
+      "description": "Deal 2 damage",
+      "price": 9,
       "type": "weapon",
       "side": "center",
       "value": 2
     },
     {
-      "id": 17,
-      "name": "Crystal part",
-      "description": "Deal 3 damage",
+      "id": 19,
+      "name": "Crystal",
+      "description": "Deal 2 damage",
+      "price": 10,
+      "type": "weapon",
+      "side": "right",
+      "value": 2
+    },
+    {
+      "id": 21,
+      "name": "Crystal",
+      "description": "Deal 2 damage",
       "price": 11,
       "type": "weapon",
       "side": "center",
       "value": 2
     },
     {
-      "id": 18,
-      "name": "Crystal part",
+      "id": 22,
+      "name": "Crystal",
       "description": "Deal 3 damage",
       "price": 11,
       "type": "weapon",
@@ -165,21 +201,21 @@
       "value": 3
     },
     {
-      "id": 19,
-      "name": "Crystal part",
-      "description": "Deal 1 damage",
+      "id": 23,
+      "name": "Crystal",
+      "description": "Deal 3 damage",
       "price": 12,
       "type": "weapon",
-      "side": "center",
+      "side": "right",
       "value": 3
     },
     {
-      "id": 20,
-      "name": "Crystal part",
-      "description": "Deal 1 damage",
+      "id": 24,
+      "name": "Crystal",
+      "description": "Deal 3 damage",
       "price": 13,
       "type": "weapon",
-      "side": "center",
+      "side": "left",
       "value": 3
     }
   ]
