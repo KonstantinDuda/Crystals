@@ -1,42 +1,43 @@
 // Part of Crystal data model
-enum PartType {money, weapon, modifier}
-enum PartSide {left, center, right, all, nowhere}
+enum PartType { money, weapon, modifier }
 
-class CrystalPart{
-  int id;
-  String name;
-  String description;
-  int price;
-  PartType type;
-  PartSide side;
-  int value;
+enum PartSide { left, center, right, all, nowhere }
+
+class CrystalPart {
+  final int id;
+  final String name;
+  final String description;
+  final int price;
+  final PartType type;
+  final PartSide side;
+  final int value;
 
   CrystalPart({
-    required this.id, 
-    required this.name, 
-    required this.description, 
+    required this.id,
+    required this.name,
+    required this.description,
     required this.price,
     required this.type,
     required this.side,
     required this.value,
-});
+  });
 
   factory CrystalPart.fromJson(Map<String, dynamic> json) {
     return CrystalPart(
-      id: json['id'], 
-      name: json['name'], 
-      description: json['description'], 
-      price: json['price'], 
-      type: PartType.values.byName(json['type']), 
-      side: PartSide.values.byName(json['side']), 
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      price: json['price'],
+      type: PartType.values.byName(json['type']),
+      side: PartSide.values.byName(json['side']),
       value: json['value'],
     );
   }
 
-  CrystalPart.empty({
-    this.id = 0, 
-    this.name = "", 
-    this.description = "", 
+  const CrystalPart.empty({
+    this.id = 0,
+    this.name = "",
+    this.description = "",
     this.price = 0,
     this.type = PartType.money,
     this.side = PartSide.nowhere,
@@ -45,7 +46,8 @@ class CrystalPart{
 
   @override
   String toString() {
-    var result = "id: $id, \t price: $price \t side: $side, \t type: $type, value: $value \n";
+    var result =
+        "id: $id, \t price: $price \t side: $side, \t type: $type, value: $value \n";
     return result;
   }
 }
@@ -58,7 +60,7 @@ class Crystal {
   CrystalPart rightPart;
   String description = "";
   PartType type = PartType.money;
-  List<int> damage = [];
+  int damage = 0;
   int money = 0;
 
   Crystal({
@@ -67,35 +69,48 @@ class Crystal {
     required this.centerPart,
     required this.rightPart,
   }) {
-    if(leftPart.type == PartType.weapon || 
-      centerPart.type == PartType.weapon || 
-      rightPart.type == PartType.weapon) {
-      type = PartType.weapon; 
+    if (leftPart.type == PartType.weapon ||
+        centerPart.type == PartType.weapon ||
+        rightPart.type == PartType.weapon) {
+      type = PartType.weapon;
     } else {
       type = PartType.money;
     }
 
-    if(type == PartType.weapon) {
+    if (type == PartType.weapon) {
       var localDamage = 0;
-      if(leftPart.id != 0) localDamage += leftPart.value;//damage.add(leftPart.value);
-      if(centerPart.id != 0) localDamage += centerPart.value;//damage.add(centerPart.value);
-      if(rightPart.id != 0) localDamage += rightPart.value;//damage.add(rightPart.value);
-      damage.add(localDamage);
+      if (leftPart.id != 0) {
+        localDamage += leftPart.value;
+      } //damage.add(leftPart.value);
+      if (centerPart.id != 0) {
+        localDamage += centerPart.value;
+      } //damage.add(centerPart.value);
+      if (rightPart.id != 0) {
+        localDamage += rightPart.value; //damage.add(rightPart.value);
+      }
+      damage = localDamage;
     } else {
       var localMoney = 0;
-      if(leftPart.id != 0) localMoney += leftPart.value;
-      if(centerPart.id != 0) localMoney += centerPart.value;
-      if(rightPart.id != 0) localMoney += rightPart.value;
+      if (leftPart.id != 0) localMoney += leftPart.value;
+      if (centerPart.id != 0) localMoney += centerPart.value;
+      if (rightPart.id != 0) localMoney += rightPart.value;
       money = localMoney;
       //description = "${leftPart.description}\n${centerPart.description}\n${rightPart.description}";
     }
   }
 
+  Crystal.empty({
+    this.id = 0,
+    this.leftPart = const CrystalPart.empty(),
+    this.centerPart = const CrystalPart.empty(),
+    this.rightPart = const CrystalPart.empty(),
+  });
+
   // void activate(Player player) {
   //   List<CrystalPart> weaponParts = [leftPart, centerPart, rightPart]
   //       .where((p) => p.type == PartType.weapon)
   //       .toList();
-/*
+  /*
     // 1. Логіка зброї
     if (weaponParts.length == 1) {
       // Наносить 1 урон самостійно
@@ -110,5 +125,4 @@ class Crystal {
       player.bank += right.value;
     }*/
   //}
-
 }

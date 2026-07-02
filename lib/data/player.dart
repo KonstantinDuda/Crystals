@@ -52,7 +52,7 @@ class Tool {
   const Tool.empty({
     this.id = 0,
     this.health = 0,
-    this.tripods = const <Tripod> [],
+    this.tripods = const <Tripod>[],
   });
 }
 
@@ -63,7 +63,8 @@ class Tripod {
   final int energyToOpen;
   final int energyToOnceUse;
   final bool onceUseAvailable;
-  final bool isWeaponEquipped;
+  //final bool isWeaponEquipped;
+  final Crystal weapon;
   final String modifier;
 
   Tripod({
@@ -72,17 +73,17 @@ class Tripod {
     required this.energyToOpen,
     required this.energyToOnceUse,
     required this.onceUseAvailable,
-    required this.isWeaponEquipped,
+    //required this.isWeaponEquipped,
+    required this.weapon,
     required this.modifier,
   });
 
-  Tripod.empty({
-    this.id = 0,
-    this.isOpen = false,
-    this.energyToOpen = 1000,
-    this.energyToOnceUse = 1000,
-    this.onceUseAvailable = false,
-    this.isWeaponEquipped = false,
-    this.modifier = "",
-  });
+  Tripod.empty()
+      : id = 0,
+        isOpen = false,
+        energyToOpen = 1000,
+        energyToOnceUse = 1000,
+        onceUseAvailable = false,
+        weapon = Crystal.empty(),
+        modifier = "";
 }

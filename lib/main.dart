@@ -14,11 +14,14 @@ void main() {
 
   Bloc.observer = SimpleBlocObserver();
   var data = Database();
-  data.loadData;
+  data.crystalPartLoadData();
+  data.crystalLoadData();
 
-  runApp(//GameWidget(game: MyFlameProvider())
-    BlocProvider(create: (_) => SuplyBloc()..add(SuplyInitialEvent()),
-       child: GameWidget(game: MyFlameProvider()),
+  runApp(
+    //GameWidget(game: MyFlameProvider())
+    BlocProvider(
+      create: (_) => SuplyBloc()..add(SuplyInitialEvent()),
+      child: GameWidget(game: MyFlameProvider()),
     ),
-    );
+  );
 }

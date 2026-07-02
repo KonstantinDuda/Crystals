@@ -14,7 +14,19 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   _playerInitial(PlayerInitialEvent event, Emitter<PlayerState> emit) {
-    List<Crystal> localHand = [];
+    var crystalWeapon = Crystal(
+      id: 1,
+      leftPart: data.weaponParts[0],
+      centerPart: data.getCrystalPart(0),
+      rightPart: data.getCrystalPart(0),
+    );
+    var crystalMoney = Crystal(
+      id: 2,
+      leftPart: data.moneyParts[0],
+      centerPart: data.getCrystalPart(0),
+      rightPart: data.getCrystalPart(0),
+    );
+    List<Crystal> localHand = [crystalWeapon, crystalMoney];
     List<Crystal> localStack = [];
     //Tripod tripodOne;
     //tripodOne.getTripod(1);
